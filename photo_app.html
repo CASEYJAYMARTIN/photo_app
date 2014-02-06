@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+
+		<title>photo</title>
+
+		<style type="text/css">
+			@import url(http://fonts.googleapis.com/css?family=Waiting+for+the+Sunrise);
+			html, body, .photos {
+				width: 100%;
+				margin: 0;
+				padding: 0;
+				background: hsla(70, 50%, 50%, 1);
+			}
+
+			.photo, .caption {
+				text-align: center;
+				font: 20px "Waiting for the Sunrise", cursive;
+			}
+
+			.photo {
+				width: 85%;
+				float: left;
+				background: hsla(70, 95%, 5%, 1);
+				border-style: solid;
+				border-color: hsla(70, 10%, 90%, 1);
+				margin: 2% 0 0 2%;
+				background-size: cover;
+				background-position: center center;
+				color: hsla(70, 10%, 90%, 1);
+				text-align: center;
+			}
+
+			.caption {
+				width: 90%;
+				height: 30%;
+				margin-top: 100%;
+				color: hsla(70, 95%, 5%, 1);
+				padding: 5%;
+				text-align: center;
+				font: 20px "Waiting for the Sunrise", cursive;
+			}
+
+			form {
+				float: left;
+				background: hsla(70, 95%, 85%, 1);
+				width: 93.5%;
+				height: 70%;
+				margin: 2% 0 0 2%;
+				font: 20px "Waiting for the Sunrise", cursive;
+			}
+
+			.max {
+				width: 90%;
+				margin: 0;
+			}
+
+			@media only screen and (min-width: 540px) {
+				.photo {
+					width: 40%;
+				}
+				.max{
+					width: 90%;
+					margin: 0;
+				}
+
+				form {
+					width: 44%;
+				}
+			}
+			
+			@media only screen and (min-width: 1080px) {
+				.photo {
+					width: 28%;
+				}
+				.max{
+					width: 90%;
+					margin: 0;
+				}
+
+				form {
+					width: 30.8%;
+				}
+			}
+
+		</style>
+
+		<script type="text/javascript">
+
+			loadJS = function () {
+				
+				window.addEventListener('load', adjustPhoto, false);
+				window.addEventListener('resize', adjustPhoto, false);
+				window.addEventListener('DOMNodeInserted', adjustPhoto, false);
+				function adjustPhoto () {
+						var photos = document.getElementsByClassName('photo')
+						var width = photos[0].clientWidth;
+						var trlBorderWidth = width * 0.05 + "px";
+						var bBorderWidth = width * 0.4 + "px";
+						for (var i = 0; i < photos.length; i++) {
+							photos[i].style.height = width + "px";
+							photos[i].style.borderWidth = trlBorderWidth + " " + trlBorderWidth + " " + bBorderWidth + " " + trlBorderWidth;
+						};
+				};
+			
+
+				createphoto = function () {
+					var reader = new FileReader();
+					reader.readAsDataURL(document.getElementById('picture').files[0]);
+
+					var newPhoto = document.createElement('div');
+					newPhoto.setAttribute('class', 'photo');
+
+					reader.onload = function(event) {
+					    var contents = event.target.result;
+					    newPhoto.style.backgroundImage = "url(" + contents + ")";
+					};
+
+					var photoComment = document.createElement('div');
+					photoComment.setAttribute('class', 'caption');
+					photoComment.innerHTML = document.getElementById('caption').value;
+
+					newPhoto.appendChild(photoComment);
+					document.getElementById('photos').appendChild(newPhoto);
+				};
+
+				adjustPhoto();
+
+		};
+
+		</script>
+
+	</head>
+
+<body onload = "loadJS()">
+
+	<div class="photos" id="photos">
+		<div class="photo">this is where captions go
+			<div class="caption">this is where captions go</div>
+		</div>
+		<div class="photo">you can add your own
+			<div class="caption">you can write one here</div>
+		</div>
+		<div class="photo">choose one you like
+			<div class="caption">write what you want</div>
+		</div>
+	</div>
+
+	<form onclick = "createPhoto()">
+		<input type='file' id='picture'></input><br>
+		<input type='text' maxlength='140' id="caption" placeholder="write a caption here"></input><br>
+		<button type='button' value='submit' onclick = "createphoto()">Add Photo</button>
+	</form>
+
+</body>
+</html>
